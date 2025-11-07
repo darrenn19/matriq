@@ -1,0 +1,191 @@
+/* --- GLOBAL STYLES --- */
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #000;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.cosmic-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.particle-field {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, #1a1a2e 0%, #090a0f 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* --- MAIN CONTENT SECTION --- */
+.main-content {
+  position: relative;
+  z-index: 50;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* vertically center */
+  align-items: center;     /* horizontally center */
+  text-align: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.main-content h1 {
+  font-size: clamp(1.8rem, 5vw, 3rem); /* responsive font */
+  margin: 0 0 1rem;
+  letter-spacing: 2px;
+  color: #fff;
+  word-wrap: break-word;
+}
+
+.main-content p {
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem); /* responsive font */
+  max-width: 90%;  /* ensures paragraph fits on small screens */
+  line-height: 1.5;
+  color: #ccc;
+  padding: 0 1rem;
+  word-wrap: break-word;
+  white-space: normal; /* allow line breaks */
+  overflow-wrap: break-word; /* ensure wrapping */
+}
+
+/* --- SETTINGS ICON --- */
+.settings-btn {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 150, 255, 0.3);
+  backdrop-filter: blur(5px);
+  cursor: pointer;
+  z-index: 200;
+  box-shadow: 0 0 10px rgba(0, 200, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.settings-btn:hover {
+  background: rgba(0, 150, 255, 0.5);
+  box-shadow: 0 0 20px rgba(0, 200, 255, 0.8);
+}
+
+.settings-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: #fff;
+}
+
+/* --- SETTINGS PANEL --- */
+.settings-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 350px;
+  height: 100%;
+  background: rgba(10, 15, 30, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  transition: transform 0.5s ease;
+  transform: translateX(100%);
+}
+
+.settings-panel.open {
+  transform: translateX(0);
+}
+
+.settings-panel button {
+  padding: 12px 24px;
+  background: rgba(0, 150, 255, 0.3);
+  border: 1px solid rgba(0, 200, 255, 0.6);
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  border-radius: 30px;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 200, 255, 0.4);
+}
+
+.settings-panel button:hover {
+  background: rgba(0, 150, 255, 0.5);
+  box-shadow: 0 0 25px rgba(0, 200, 255, 0.7);
+}
+
+/* --- PARTICLES --- */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10;
+  transform-origin: center;
+}
+
+@keyframes float {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-100vh) rotate(360deg); }
+}
+
+@keyframes flow {
+  0% { transform: translateX(0) translateY(0); }
+  25% { transform: translateX(20vw) translateY(10vh); }
+  50% { transform: translateX(-15vw) translateY(30vh); }
+  75% { transform: translateX(10vw) translateY(50vh); }
+  100% { transform: translateX(0) translateY(100vh); }
+}
+
+@keyframes spiral {
+  0% { transform: translateX(0) translateY(0) rotate(0deg); }
+  100% { transform: translateX(50vw) translateY(100vh) rotate(720deg); }
+}
+
+/* --- RESPONSIVENESS --- */
+@media (max-width: 900px) {
+  .settings-panel {
+    width: 50vw;
+  }
+
+  .settings-btn {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .settings-panel {
+    width: 60vw;
+  }
+}
+
+@media (max-width: 400px) {
+  .main-content h1 {
+    font-size: 1.8rem;
+    padding: 0 1rem;
+  }
+
+  .main-content p {
+    font-size: 0.9rem;
+    max-width: 90%;
+    padding: 0 1rem;
+  }
+}
