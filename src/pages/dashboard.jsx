@@ -142,7 +142,6 @@ export default function App() {
 
   const [panelOpen, setPanelOpen] = useState(false);
 
-  console.log("present");
 
 
   return (
