@@ -170,22 +170,22 @@ export default function Dashboard() {
           </li>
           <li>
             <a href="#" style={{ "--i": "0.30s" }}>
-              Portfolio
+              To Do
             </a>
           </li>
           <li>
             <a href="#" style={{ "--i": "0.45s" }}>
-              Testimonials
+              Calendar
             </a>
           </li>
           <li>
             <a href="#" style={{ "--i": "0.60s" }}>
-              About
+              Settings
             </a>
           </li>
           <li>
             <a href="#" style={{ "--i": "0.75s" }}>
-              Contact
+              Log Out
             </a>
           </li>
         </ul>
