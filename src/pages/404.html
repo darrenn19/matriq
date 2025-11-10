@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Page Not Found</title>
+    <script type="text/javascript">
+      // Grab the current path
+      const path = window.location.pathname;
+
+      // Redirect all 404s to index.html while preserving the path
+      window.location.replace('/' + path);
+    </script>
+  </head>
+  <body></body>
+</html>

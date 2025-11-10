@@ -1,17 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Dashboard from './pages/dashboard'
-import Matrix from "./pages/matrix";
-import './index.css'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { HashRouter, Routes, Route } from 'react-router-dom';
+import Dashboard from './pages/dashboard';
+import Matrix from './pages/matrix';
+import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter basename="/matriq">
+    <HashRouter>
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/matrix" element={<Matrix />} />
       </Routes>
-    </BrowserRouter>
-  </React.StrictMode>,
-)
+    </HashRouter>
+  </React.StrictMode>
+);
