@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./app.css";
-import "./matrix.css";
 import StarSky from "../components/starsky";
+import NewMatrixButton from "../components/newMatrixButton";
 
 export default function MatrixPage() {
   const [active, setActive] = useState(false);
@@ -52,27 +52,30 @@ export default function MatrixPage() {
             </Link>
           </li>
           <li>
-            <a href="#" style={{ "--i": "0.30s" }}>
+            <a href="#/" style={{ "--i": "0.30s" }}>
               To Do
             </a>
           </li>
           <li>
-            <a href="#" style={{ "--i": "0.45s" }}>
+            <a href="#/" style={{ "--i": "0.45s" }}>
               Calendar
             </a>
           </li>
           <li>
-            <a href="#" style={{ "--i": "0.60s" }}>
+            <a href="#/" style={{ "--i": "0.60s" }}>
               Settings
             </a>
           </li>
           <li>
-            <a href="#" style={{ "--i": "0.75s" }}>
+            <a href="#/" style={{ "--i": "0.75s" }}>
               Log Out
             </a>
           </li>
         </ul>
       </div>
+
+      {/* NEW MATRIX BUTTON */}
+      <NewMatrixButton />
     </div>
   );
 }

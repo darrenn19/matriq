@@ -159,7 +159,7 @@ export default function Dashboard() {
       <div className="links">
         <ul>
           <li>
-            <Link to="/" style={{ "--i": "0.05s" }}>
+            <Link to="" style={{ "--i": "0.05s" }}>
               Home
             </Link>
           </li>
