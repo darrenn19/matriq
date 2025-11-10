@@ -4,7 +4,9 @@ import { supabase } from './lib/supabase'
 
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import Dashboard from './pages/dashboard' // make sure this exists
+//PAGES
+import Dashboard from './pages/dashboard'
+import Matrix from "./pages/matrix";
 import './App.css'
 
 // Example Supabase call
@@ -54,6 +56,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/matrix" element={<Matrix />} />
       </Routes>
     </Router>
   )

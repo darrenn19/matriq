@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./app.css";
 
 export default function Dashboard() {
@@ -6,7 +7,7 @@ export default function Dashboard() {
   const toggleMenu = () => setActive((prev) => !prev);
 
   useEffect(() => {
-    // 🌌 PARTICLE BACKGROUND SCRIPT
+    // PARTICLE BACKGROUND SCRIPT
     const container = document.querySelector(".particle-field");
     const colorBtn = document.getElementById("color-btn");
     const flowBtn = document.getElementById("flow-btn");
@@ -116,7 +117,7 @@ export default function Dashboard() {
 
   return (
     <div className={`container ${active ? "active" : ""}`}>
-      {/* 🌐 NAVBAR */}
+      {/*  NAVBAR */}
       <div className="navbar">
         <div className="menu">
           <h3 className="logo">MatrIQ</h3>
@@ -126,7 +127,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* 🌌 MAIN COSMIC BACKGROUND */}
+      {/*  MAIN COSMIC BACKGROUND */}
       <div className="main-container">
         <div className="main">
           <div className="cosmic-container">
@@ -163,9 +164,9 @@ export default function Dashboard() {
             </a>
           </li>
           <li>
-            <a href="#" style={{ "--i": "0.15s" }}>
-              Services
-            </a>
+            <Link to="/matrix" style={{ "--i": "0.15s" }}>
+              Matrices
+            </Link>
           </li>
           <li>
             <a href="#" style={{ "--i": "0.30s" }}>
