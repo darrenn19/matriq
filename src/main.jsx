@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import Dashboard from './pages/dashboard';
 import Matrix from './pages/matrix';
+import AuthPage from './pages/auth';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -11,6 +12,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/matrix" element={<Matrix />} />
+        <Route path="/auth" element={<AuthPage />} />
       </Routes>
     </HashRouter>
   </React.StrictMode>
