@@ -489,3 +489,65 @@
     font-size: 0.9rem;
   }
 }
+
+/* === POPUP STYLES === */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease forwards;
+  z-index: 1000;
+}
+
+.popup-box {
+  background: #121212;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 25px 35px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  animation: popIn 0.3s ease forwards;
+}
+
+.popup-box button {
+  margin-top: 15px;
+  padding: 8px 18px;
+  background: #5c5cff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.popup-box button:hover {
+  background: #7676ff;
+}
+
+.popup-overlay.success .popup-box {
+  border-color: #00ffae;
+  box-shadow: 0 0 25px rgba(0, 255, 174, 0.4);
+}
+
+.popup-overlay.error .popup-box {
+  border-color: #ff4b4b;
+  box-shadow: 0 0 25px rgba(255, 75, 75, 0.4);
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
