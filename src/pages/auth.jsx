@@ -3,16 +3,12 @@ import { Eye, EyeOff } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import "./nightScene.css";
 
-// ✅ Popup component — works even if you have no CSS for it
+// Popup component
 const Popup = ({ message, type, onClose }) => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (message) {
-      setVisible(true);
-    } else {
-      setVisible(false);
-    }
+    setVisible(!!message);
   }, [message]);
 
   if (!message) return null;
@@ -40,7 +36,12 @@ const Popup = ({ message, type, onClose }) => {
         className="popup-box"
         onClick={(e) => e.stopPropagation()}
         style={{
-          background: type === "error" ? "#ff4444" : type === "success" ? "#4CAF50" : "#333",
+          background:
+            type === "error"
+              ? "#ff4444"
+              : type === "success"
+              ? "#4CAF50"
+              : "#333",
           color: "#fff",
           padding: "1.5rem 2rem",
           borderRadius: "10px",
@@ -78,16 +79,21 @@ const Auth = () => {
   const [popup, setPopup] = useState({ message: "", type: "" });
   const passwordRefs = useRef({});
 
+  // Toggle password visibility and update moon target to marker
   const togglePasswordVisibility = useCallback((field) => {
     setShowPassword((prev) => {
       const newState = { ...prev, [field]: !prev[field] };
-      if (newState[field] && passwordRefs.current[field]) {
-        const input = passwordRefs.current[field];
-        const rect = input.getBoundingClientRect();
-        setEyeTarget({
-          x: rect.left + rect.width / 2,
-          y: rect.top + rect.height / 2,
-        });
+
+      if (newState[field]) {
+        const marker = document.querySelector(
+          `.beam-marker[data-field="${field}"]`
+        );
+        if (marker) {
+          const rect = marker.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          setEyeTarget({ x: centerX, y: centerY });
+        }
       }
       return newState;
     });
@@ -104,7 +110,80 @@ const Auth = () => {
 
   const isAnyPasswordVisible = Object.values(showPassword).some((val) => val);
 
-  // ✅ Login
+  // 🌙 Responsive moon-beam target tracking
+  useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      if (!isAnyPasswordVisible) return;
+
+      const activeField = Object.keys(showPassword).find((f) => showPassword[f]);
+      if (!activeField) return;
+
+      const marker = document.querySelector(`.beam-marker[data-field="${activeField}"]`);
+      if (marker) {
+        const rect = marker.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        setEyeTarget({ x: centerX, y: centerY });
+      }
+    });
+
+    document.querySelectorAll(".beam-marker").forEach((m) => observer.observe(m));
+
+    const handleResize = () => {
+      const activeField = Object.keys(showPassword).find((f) => showPassword[f]);
+      if (!activeField) return;
+      const marker = document.querySelector(`.beam-marker[data-field="${activeField}"]`);
+      if (marker) {
+        const rect = marker.getBoundingClientRect();
+        setEyeTarget({
+          x: rect.left + rect.width / 2,
+          y: rect.top + rect.height / 2,
+        });
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleResize);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
+    };
+  }, [showPassword, isAnyPasswordVisible]);
+
+  // 🪄 Moon beam movement + transform animation
+  useEffect(() => {
+    const moon = document.querySelector(".moon");
+    const beam = document.querySelector(".moon-beam");
+    if (!moon || !beam) return;
+
+    const updateBeam = () => {
+      const moonRect = moon.getBoundingClientRect();
+      const moonCenterX = moonRect.left + moonRect.width / 2;
+      const moonCenterY = moonRect.top + moonRect.height / 2;
+
+      if (!isAnyPasswordVisible) {
+        beam.style.transform = `translateX(-50%) rotate(90deg) scaleY(0)`;
+        return;
+      }
+
+      const dx = eyeTarget.x - moonCenterX;
+      const dy = eyeTarget.y - moonCenterY;
+      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const maxBeamLength = 800;
+      const scaleY = Math.min(distance / maxBeamLength, 1);
+
+      beam.style.transform = `translateX(-50%) rotate(${angle - 90}deg) scaleY(${scaleY})`;
+    };
+
+    updateBeam();
+    window.addEventListener("resize", updateBeam);
+    return () => window.removeEventListener("resize", updateBeam);
+  }, [eyeTarget, isAnyPasswordVisible]);
+
+  // 🧩 Login
   const handleLogin = async (e) => {
     e.preventDefault();
     const email = e.target.email.value.trim();
@@ -115,14 +194,11 @@ const Auth = () => {
       password,
     });
 
-    if (error) {
-      showPopup(error.message, "error");
-    } else {
-      window.location.href = "#/";
-    }
+    if (error) showPopup(error.message, "error");
+    else window.location.href = "#/";
   };
 
-  // Signup
+  // 🧩 Signup
   const handleSignup = async (e) => {
     e.preventDefault();
     const full_name = e.target.full_name.value.trim();
@@ -140,9 +216,8 @@ const Auth = () => {
       password,
     });
 
-    if (error) {
-      showPopup(error.message, "error");
-    } else {
+    if (error) showPopup(error.message, "error");
+    else {
       const user = data.user;
       if (user) {
         await supabase.from("profiles").insert({
@@ -152,7 +227,6 @@ const Auth = () => {
         });
       }
       showPopup("Account created! Check your email for confirmation.", "success");
-      Navigate("/");
     }
   };
 
@@ -176,6 +250,7 @@ const Auth = () => {
               </div>
             </div>
           </div>
+          <div className={`moon-beam ${isAnyPasswordVisible ? "active" : ""}`}></div>
         </div>
       </div>
 
@@ -240,7 +315,7 @@ const Auth = () => {
               />
             </div>
 
-            <div className="input-group password-group">
+            <div className="input-group password-group" style={{ position: "relative" }}>
               <input
                 name="password"
                 ref={(el) => (passwordRefs.current.loginPassword = el)}
@@ -249,6 +324,7 @@ const Auth = () => {
                 className="auth-input"
                 required
               />
+              <div className="beam-marker" data-field="loginPassword"></div>
               <button
                 type="button"
                 className="password-toggle"
@@ -290,7 +366,7 @@ const Auth = () => {
               />
             </div>
 
-            <div className="input-group password-group">
+            <div className="input-group password-group" style={{ position: "relative" }}>
               <input
                 name="password"
                 ref={(el) => (passwordRefs.current.signupPassword = el)}
@@ -299,6 +375,7 @@ const Auth = () => {
                 className="auth-input"
                 required
               />
+              <div className="beam-marker" data-field="signupPassword"></div>
               <button
                 type="button"
                 className="password-toggle"
@@ -308,7 +385,7 @@ const Auth = () => {
               </button>
             </div>
 
-            <div className="input-group password-group">
+            <div className="input-group password-group" style={{ position: "relative" }}>
               <input
                 name="confirm"
                 ref={(el) => (passwordRefs.current.confirmPassword = el)}
@@ -317,6 +394,7 @@ const Auth = () => {
                 className="auth-input"
                 required
               />
+              <div className="beam-marker" data-field="confirmPassword"></div>
               <button
                 type="button"
                 className="password-toggle"
@@ -333,7 +411,6 @@ const Auth = () => {
         </div>
       </div>
 
-      {/*Custom Popup */}
       <Popup message={popup.message} type={popup.type} onClose={closePopup} />
     </div>
   );

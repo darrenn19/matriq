@@ -55,7 +55,7 @@
   right: 20%;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.2);
   animation: moonGlow 4s ease-in-out infinite alternate;
-  overflow: hidden;
+  overflow: visible;
   --eye-x: 0px;
   --eye-y: 0px;
   will-change: box-shadow;
@@ -93,6 +93,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.4s ease;
+  transform: translateX(var(--eye-offset-x, 0));
+}
+.moon.eye-open .eye-white {
+  --eye-offset-x: -6px; /* move left slightly toward the password field */
 }
 
 .iris {
@@ -115,6 +120,8 @@
   background: rgba(255, 255, 255, 0.5);
   border-radius: 50%;
 }
+
+
 
 .pupil {
   position: absolute;
@@ -550,4 +557,53 @@
     transform: scale(1);
     opacity: 1;
   }
+}
+
+/* === MOON BEAM EFFECT === */
+.moon-beam {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translateX(-50%) scaleY(1);
+  transform-origin: top center;
+  width: 350px; /* base width of the cone */
+  height: 1250px; /* how far it reaches */
+  background: radial-gradient(
+    ellipse at center,
+    rgba(200, 220, 255, 0.35) 0%,
+    rgba(180, 210, 255, 0.2) 30%,
+    rgba(150, 180, 255, 0.05) 70%,
+    transparent 100%
+  );
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  opacity: 0;
+  filter: blur(4px);
+  pointer-events: none;
+  transition:
+    transform 0.6s ease,  /* same speed both ways */
+    opacity 0.4s ease-in-out;    /* optional: match opacity speed */
+  z-index: 10000;
+}
+
+.moon-beam.active {
+  z-index: 11000;
+  transform: translateX(-50%) scaleY(1);
+  opacity: 1;
+  /* same transition as default state */
+  transition:
+    transform 0.4s ease-in-out,
+    opacity 0.4s ease-in-out;
+}
+
+.beam-marker {
+  position: absolute;
+  right: 38px; /* near the eye icon */
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  background: transparent; /* Make visible (red) for debugging */
+  border-radius: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 9999;
 }
